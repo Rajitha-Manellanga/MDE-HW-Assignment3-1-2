@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="btstwo" nsURI="btstwo" nsPrefix="btstwo">
+  <eClassifiers xsi:type="ecore:EClass" name="Booking">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="baggageweight bagAllowance"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="baggageweight" value="baggage.weight->select(baggage.Booking=self)-> size() &lt;= maximumWeight"/>
+      <details key="bagAllowance" value="baggage.totalBags->select(baggage.Booking=self)-> size() &lt;= allowedBags"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="booking_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="payment_date" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" eType="#//status"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="journey_date" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ticket" lowerBound="1"
+        eType="#//Ticket" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="payment" lowerBound="1"
+        upperBound="-1" eType="#//Ticket_payment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="baggage" upperBound="-1"
+        eType="#//Luggage" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maximumWeight" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalAvailableBookings"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowedBags" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="seat" lowerBound="1" eType="#//Seat"
+        eOpposite="#//Seat/booking"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traveller" eType="#//Traveller"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ticket_payment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="payment_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Place">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bus_stop" eType="#//terminal"
+        changeable="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ticket">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ticket_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="price" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrival_city" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="departure_city" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="journey_date" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="booking_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="childTicketPrice" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Transport">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bus_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bus_stop" eType="#//terminal"
+        changeable="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="capacity" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="city" upperBound="-1" eType="#//Place"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traveller" upperBound="-1"
+        eType="#//Traveller" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="seat" lowerBound="1" upperBound="-1"
+        eType="#//Seat" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bookedseats" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Luggage">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="luggage_tag" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="luggage_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ticket_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seat_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalBags" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Traveller" eSuperTypes="#//Adult #//Child">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fisrt_name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="last_name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="email" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="phone" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigInteger"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="booking" lowerBound="1"
+        upperBound="-1" eType="#//Booking" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="baggage" upperBound="-1"
+        eType="#//Luggage" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traveller_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="terminal">
+    <eLiterals name="departure_point"/>
+    <eLiterals name="arrival_point" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Seat">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seat_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="booking" lowerBound="1"
+        eType="#//Booking" eOpposite="#//Booking/seat"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="status">
+    <eLiterals name="booked"/>
+    <eLiterals name="reserved" value="1"/>
+    <eLiterals name="cancelled" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Adult">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="full_name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Child">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="guardian_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

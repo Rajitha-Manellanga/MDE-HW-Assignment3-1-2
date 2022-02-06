@@ -1,0 +1,121 @@
+-- @path BTSOne=/BTSM2M/btsone.ecore
+-- @path BTSTwo=/BTSM2M/btstwo.ecore
+
+module BTSM2M;
+create OUT : BTSTwo from IN : BTSOne;
+
+helper context BTSOne!Passenger def:isAdult(): Boolean =
+	if self.phone.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BTSOne!Passenger def:getGuardian(): String =
+	self.passenger_id;
+
+helper context BTSOne!Bus def:isApprovedCapacity(): Boolean =
+	if self.bookedseats >= 30 then
+		true
+	else
+		false
+	endif;
+
+rule Passenger2Child{
+	from 
+		p : BTSOne!Passenger (p.isAdult())
+	to
+		out : BTSTwo!Child(
+				guardian_id <- p.getGuardian()	
+		)
+	
+}
+
+rule Booking2Booking{
+	from
+		b : BTSOne!Booking
+	to
+		nb: BTSTwo!Booking(
+				traveller <- b.passenger,
+				allowedBags <- b.allowedBags,
+				baggage <- b.baggage,
+				booking_id <- b.booking_id,
+				journey_date <- b.journey_date,
+				maximumWeight <- b.maximumWeight,
+				payment <- b.payment,
+				payment_date <- b.payment_date,
+				seat <- b.seat,
+				status <- b.status,
+				ticket <- b.ticket,
+				totalAvailableBookings <- b.totalAvailableBookings
+				
+		)
+}
+
+rule Passenger2Traveller{
+	from
+		p : BTSOne!Passenger 
+		
+	to
+		out :BTSTwo!Traveller(
+				baggage <- p.baggage,
+				booking <- p.booking,
+				email <- p.email,
+				fisrt_name <- p.fisrt_name,
+				full_name <- p.fisrt_name+' '+p.last_name,
+				last_name <- p.last_name,
+			    phone <- p.phone,
+				traveller_id <- p.passenger_id
+		)
+}
+
+rule Bus2Transport{
+	from
+		b : BTSOne!Bus (b.isApprovedCapacity())
+	to
+		out :BTSTwo!Transport(
+			bookedseats <- b.bookedseats,
+			bus_id <- b.bus_id,
+			bus_stop <- b.bus_stop,
+			capacity <- b.capacity,
+			city <- b.city,
+			seat <- b.seat
+			
+		)
+}
+
+rule City2Place{
+	from
+		c : BTSOne!City
+	to
+		out : BTSTwo!Place(
+			   name <- c.name,
+			   bus_stop <- c.bus_stop
+		)
+
+}
+
+rule Baggage2Luggage{
+	from
+		b :BTSOne!Baggage
+	to
+		out : BTSTwo!Luggage(
+				luggage_id <- b.baggage_id,
+				luggage_tag <- b.baggage_tag,
+				seat_id <- b.seat_id,
+				ticket_id <- b.ticket_id,
+				totalBags <- b.totalBags,
+				weight <- b.weight
+		)
+}
+
+rule Payment2TicketPayment{
+	from
+		t : BTSOne!Payment
+	to
+		out : BTSTwo!Ticket_Payment(
+				payment_id <- t.ticket_id
+		)
+}
+
+
